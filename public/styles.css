@@ -1,0 +1,11 @@
+#canvas {
+    background-color: pink;
+}
+
+#dot {
+    height: 4px;
+    width: 4px;
+    position: absolute;
+    background-color: lightblue;
+    pointer-events: none;
+}
