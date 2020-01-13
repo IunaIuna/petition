@@ -6,7 +6,6 @@ const db = require("./db");
 // const csurf = require("csurf");
 //const cp = require('cookie-parser');
 //cookie-parser is gone! we now use use cookie-session
-
 const cookieSession = require("cookie-session");
 
 //MIDDLEWARE
@@ -22,19 +21,20 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
-
 //app.use(cp());
 app.use(
     express.urlencoded({
         extended: false
     })
 );
-
 // app.surf(csurf());
 
-//ROUTES
+//------ROUTES---------------------------------
 //////////////////////////////////////
+//LOGIN PAGE
+
 //Launch Main Page: Petition
+//USER TYPES IN DATA AND SUBMITS
 app.get("/", (req, res) => {
     console.log("GET PETITION request to / happened!");
     console.log("req.session: ", req.session);
@@ -44,26 +44,54 @@ app.get("/", (req, res) => {
     });
 });
 
+//GOES TO THANK YOU-PAGE
+
 app.post("/", (req, res) => {
-    db.addUser(req.body.first, req.body.last, "ghghg");
+    //SENDING INPUT INFO TO DATABASE
+    //THEN (.then) STORING CURRENT ID IN THE COOKIES
+    db.addUser(req.body.first, req.body.last, req.body.signature).then(
+        result => {
+            let currentId = result.rows[0].id;
+            console.log("Current ID is: ", currentId);
+            //cookie key is: signatureId, value is currentId
+            req.session.signatureId = currentId;
+            res.redirect("/signed");
+        }
+    );
     console.log("POST PETITION request to / happened!");
     console.log(req.body);
-    res.redirect("/signed");
 });
 
+//USER SEES THANK YOU-PAGE
+//THE SIGNATURE DATA IS TAKEN FROM DATABASE AND REBUILT INTO AN IMAGE
 app.get("/signed", (req, res) => {
     console.log("GET THANKS request to / happened!");
-    res.render("thanks", {
-        layout: "main"
+    Promise.all([
+        db.getSignature(req.session.signatureId),
+        db.countRows()
+    ]).then(result => {
+        console.log("SIGNATURE IS: ", result[0].rows[0].signature);
+        res.render("thanks", {
+            layout: "main",
+            output: result[0].rows[0].signature,
+            amountOfSubscribers: result[1].rows[0].count
+        });
+        // console.log("RESULTS: ", result);
+        // console.log("result1: ", result[0].rows);
+        // console.log("results2: ", result[1].rows[0].count);
     });
 });
 
-//
-// app.get("/", (req, res) => {
-//     console.log("GET SIGNERS request to / happened!");
-//     res.render("welcome", {
-//         layout: "main"
-//     });
-// });
+//LAST PAGE _ USER SEES LISTS OF SUBSCRIBERS
+app.get("/signers", (req, res) => {
+    console.log("GET SIGNERS request to / happened!");
+    db.showMeAllSigners().then(result => {
+        res.render("finalPage", {
+            layout: "main",
+            listOfSigners: result.rows
+        });
+        console.log("result - for list of signers: ", result.rows);
+    });
+});
 
 app.listen(8080, () => console.log("port 8080 listening ..."));

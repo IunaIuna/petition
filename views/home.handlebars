@@ -1,20 +1,20 @@
+
 <h1>Petition for an obligatory 30 minutes nap during work time!</h1>
     <h2>Hii </h2>
 
     <form method = "POST">
-    	<input name= "first" placeholder="first name">
-          <input name= "last" placeholder="last name">
-         <input name= "signature" type="hidden">
-         <!-- <div class="canvas"><canvas id="canvas">
-    		 <div id="dot">
-    		 </div>
-    	 </canvas></div> -->
-       <canvas id="canvas">
-       <div id="dot">
-       </div>
-     </canvas>
+    	<input name= "first" id="first" placeholder="first name">
+          <input name= "last" id="last" placeholder="last name">
+         <input name= "signature" size="300" id="signatureInput" type="hidden">
+
+
+           <canvas id="canvas" width="600" height="100"></canvas>
+
+
        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-         <button name="button">submit</button>
+         <button name="button" id="submitButton">submit</button>
     </form>
     <script src="canvas.js" type="text/javascript">
-        </script>
+    </script>
+    <script src="emptyInput.js" type="text/javascript">
+    </script>

@@ -1,11 +1,17 @@
-#canvas {
-    background-color: pink;
+* {
+    box-sizing: border-box;
 }
 
-#dot {
-    height: 4px;
-    width: 4px;
-    position: absolute;
-    background-color: lightblue;
-    pointer-events: none;
+body {
+    background-image: linear-gradient(#2980b9, #6dd5fa, #ffffff);
+    height: 100vh;
+}
+
+#canvas {
+    background-color: snow;
+    /* border: 5px solid dimgrey; */
+}
+
+#list_signers li {
+    list-style-type: none;
 }

@@ -1,1 +1,16 @@
 <h1>Im the thank you PAGE</h1>
+
+<canvas id="signatureAsImage" width="600" height="100"></canvas>
+
+<a href="/signers" id="linkToSubscriberList">See all {{amountOfSubscribers}} signers</a>
+
+<script type="text/javascript">
+  let newCanvas = document.getElementById("signatureAsImage");
+  var image = new Image();
+  let ctx2 = newCanvas.getContext("2d");
+  image.src = "{{output}}";
+  image.onload = function() {
+    ctx2.drawImage( this, 0, 0);
+    image.style.display = "none";
+  };
+</script>

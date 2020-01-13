@@ -1,6 +1,7 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg("postgres:postgres:postgres@localhost:5432/petition");
 
+//FUNCTION TO PUT THE INPUT INFO INTO THE DATABASE
 exports.addUser = function(first, last, signature) {
     return db.query(
         "INSERT INTO signatures (first, last, signature) VALUES($1, $2, $3) RETURNING id",
@@ -13,15 +14,15 @@ exports.addUser = function(first, last, signature) {
     );
 };
 
-// exports.addCity = function(name, country, population) {
-//     return db.query(
-//         "INSERT INTO cities (city, country, population) VALUES($1, $2, $3)", // $1 for the safe
-//         [name, country, population]
-//     );
-// };
-//
-// exports.getCities = function() {
-//     return db
-//         .query("SELECT id, population FROM cities")
-//         .then(({ rows }) => console.log(rows));
-// };
+//FUNCTION TO GET THE IMAGE STRING OUT OF THE DATABASE
+exports.getSignature = function(currentId) {
+    return db.query(`SELECT signature FROM signatures WHERE id = ${currentId}`);
+};
+
+exports.countRows = function() {
+    return db.query("SELECT COUNT (id) FROM signatures");
+};
+
+exports.showMeAllSigners = function() {
+    return db.query("SELECT first, last FROM signatures");
+};
