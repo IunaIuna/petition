@@ -15,3 +15,10 @@ body {
 #list_signers li {
     list-style-type: none;
 }
+
+#boxAroundInputInfo {
+    display: block;
+}
+#boxAroundForm {
+    display: inline-block;
+}

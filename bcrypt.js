@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt.js");
+const bcrypt = require("bcryptjs");
 let { genSalt, hash, compare } = bcrypt;
 const { promisify } = require("util");
 

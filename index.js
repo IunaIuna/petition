@@ -3,11 +3,11 @@ const express = require("express");
 const app = express();
 const hb = require("express-handlebars");
 const db = require("./db");
-// const csurf = require("csurf");
+const csurf = require("csurf");
 //const cp = require('cookie-parser');
 //cookie-parser is gone! we now use use cookie-session
 const cookieSession = require("cookie-session");
-
+const bcrypt = require("./bcrypt");
 //MIDDLEWARE
 //this configures express to use express-handlebars
 app.engine("handlebars", hb());
@@ -27,15 +27,55 @@ app.use(
         extended: false
     })
 );
-// app.surf(csurf());
 
 //------ROUTES---------------------------------
 //////////////////////////////////////
+//REGISTER PAGE
+app.get("/", (req, res) => {
+    res.redirect("/register");
+});
+
+app.get("/register", (req, res) => {
+    console.log("GET REGISTER request to / happened!");
+    console.log("req.session: ", req.session);
+    res.render("register", {
+        layout: "main"
+    });
+});
+
+//USER PUTS IN SIGN UP DATA AND PUSHES BUTTON
+app.post("/register", (req, res) => {
+    console.log("PUSH_SIGN UP request to / happened!");
+    db.registerUser(
+        req.body.first,
+        req.body.last,
+        req.body.mailAddress,
+        req.body.password
+    );
+    res.redirect("/petition");
+});
+
 //LOGIN PAGE
+app.get("/login", (req, res) => {
+    console.log("GET LOGIN request to / happened!");
+    console.log("req.session: ", req.session);
+    res.render("login", {
+        layout: "main"
+    });
+});
+
+//USER LOGS IN
+app.post("/login", (req, res) => {
+    console.log("GET LOGIN request to / happened!");
+    console.log("req.session: ", req.session);
+    res.render("login", {
+        layout: "main"
+    });
+});
 
 //Launch Main Page: Petition
 //USER TYPES IN DATA AND SUBMITS
-app.get("/", (req, res) => {
+app.get("/petition", (req, res) => {
     console.log("GET PETITION request to / happened!");
     console.log("req.session: ", req.session);
     // res.locals.csrfToken = req.csrfToken();
@@ -61,6 +101,7 @@ app.post("/", (req, res) => {
     console.log("POST PETITION request to / happened!");
     console.log(req.body);
 });
+app.use(csurf());
 
 //USER SEES THANK YOU-PAGE
 //THE SIGNATURE DATA IS TAKEN FROM DATABASE AND REBUILT INTO AN IMAGE
@@ -70,7 +111,7 @@ app.get("/signed", (req, res) => {
         db.getSignature(req.session.signatureId),
         db.countRows()
     ]).then(result => {
-        console.log("SIGNATURE IS: ", result[0].rows[0].signature);
+        // console.log("SIGNATURE IS: ", result[0].rows[0].signature);
         res.render("thanks", {
             layout: "main",
             output: result[0].rows[0].signature,
