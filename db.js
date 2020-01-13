@@ -4,13 +4,13 @@ const db = spicedPg("postgres:postgres:postgres@localhost:5432/petition");
 //--------USERS TABLE-----------------
 exports.registerUser = function(first, last, email, password) {
     return db.query(
-        "INSERT INTO user (first, last, email, password) VALUES ($1 $2 $3 $4) RETURNING id",
+        "INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id",
         [first, last, email, password]
     );
 };
 //---------SIGNATURE TABLE--------------
 //FUNCTION TO PUT THE INPUT INFO INTO THE DATABASE
-exports.addUser = function(first, last, signature) {
+exports.addSignature = function(first, last, signature) {
     return db.query(
         "INSERT INTO signatures (first, last, signature) VALUES($1, $2, $3) RETURNING id",
         [

@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const hb = require("express-handlebars");
 const db = require("./db");
-const csurf = require("csurf");
+// const csurf = require("csurf");
 //const cp = require('cookie-parser');
 //cookie-parser is gone! we now use use cookie-session
 const cookieSession = require("cookie-session");
@@ -46,13 +46,24 @@ app.get("/register", (req, res) => {
 //USER PUTS IN SIGN UP DATA AND PUSHES BUTTON
 app.post("/register", (req, res) => {
     console.log("PUSH_SIGN UP request to / happened!");
-    db.registerUser(
-        req.body.first,
-        req.body.last,
-        req.body.mailAddress,
-        req.body.password
-    );
-    res.redirect("/petition");
+    //HASHING THE PASSWORD BEFORE PUTTING IT IN THE DATABASE
+    bcrypt
+        .hash(req.body.password)
+        .then(hashedPassword => {
+            //PUTTING SIGN IN-INFO IN THE DATABASE
+            return db.registerUser(
+                req.body.first,
+                req.body.last,
+                req.body.mailAddress,
+                hashedPassword
+            );
+        })
+        .then(id => {
+            //SETTING THE COOKIES, LOGIN
+            req.session.userId = id;
+            res.redirect("/petition");
+        })
+        .catch(err => console.log(err));
 });
 
 //LOGIN PAGE
@@ -101,7 +112,7 @@ app.post("/", (req, res) => {
     console.log("POST PETITION request to / happened!");
     console.log(req.body);
 });
-app.use(csurf());
+// app.use(csurf());
 
 //USER SEES THANK YOU-PAGE
 //THE SIGNATURE DATA IS TAKEN FROM DATABASE AND REBUILT INTO AN IMAGE
