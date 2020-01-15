@@ -30,11 +30,14 @@ app.use(
 
 //------ROUTES---------------------------------
 //////////////////////////////////////
-//REGISTER PAGE
+//FUNCTION: REGISTER
+
+//redirect from / to /register
 app.get("/", (req, res) => {
     res.redirect("/register");
 });
 
+//register page shows up
 app.get("/register", (req, res) => {
     console.log("GET REGISTER request to / happened!");
     console.log("req.session: ", req.session);
@@ -63,26 +66,44 @@ app.post("/register", (req, res) => {
             req.session.userId = id;
             res.redirect("/petition");
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log("error in registration", err));
 });
 
 //LOGIN PAGE
 app.get("/login", (req, res) => {
     console.log("GET LOGIN request to / happened!");
-    console.log("req.session: ", req.session);
     res.render("login", {
         layout: "main"
     });
 });
 
-//USER LOGS IN
-app.post("/login", (req, res) => {
-    console.log("GET LOGIN request to / happened!");
-    console.log("req.session: ", req.session);
-    res.render("login", {
-        layout: "main"
-    });
-});
+//USER LOGS IN - WE COMPARE THE HASHED PASSWORDS
+//HashPass has two objects(id, password): So you need to specify (.password) to get the password
+// app.post("/login", (req, res) => {
+//     console.log("GET LOGIN request to / happened!");
+//     db.getInfoByEmail(req.body.mailAddress)
+//         .then(hashPassFromDB => {
+//             console.log("hashPassFromDB", hashPassFromDB);
+//             //compare() hashes automatically the typedin password
+//             if (bcrypt.compare(hashPassFromDB.password, req.body.password)) {
+//                 console.log("password input matches");
+//                 //setting the cookies
+//                 req.session.userId = hashPassFromDB.id;
+//                 //NOW: Did the user already sign for the petition?
+//                 //Check in the signature database if the user_id is there
+//                 db.checkForSignatureId(req.session.userId).then(result => {
+//                     console.log("check-results", result);
+//                     //If the length is 0, the user has not "signatured" yet
+//                     if (result.length == 0) {
+//                         res.redirect("/petition");
+//                     }
+//                 });
+//             }
+//         })
+//         .then(val => console.log("value: ", val))
+//         .catch(err => console.log("Error in login: ", err));
+//     res.redirect("/petition");
+// });
 
 //Launch Main Page: Petition
 //USER TYPES IN DATA AND SUBMITS
@@ -97,7 +118,7 @@ app.get("/petition", (req, res) => {
 
 //GOES TO THANK YOU-PAGE
 
-app.post("/", (req, res) => {
+app.post("/petition", (req, res) => {
     //SENDING INPUT INFO TO DATABASE
     //THEN (.then) STORING CURRENT ID IN THE COOKIES
     db.addUser(req.body.first, req.body.last, req.body.signature).then(
@@ -114,6 +135,7 @@ app.post("/", (req, res) => {
 });
 // app.use(csurf());
 
+//SIGNERS ROUTE
 //USER SEES THANK YOU-PAGE
 //THE SIGNATURE DATA IS TAKEN FROM DATABASE AND REBUILT INTO AN IMAGE
 app.get("/signed", (req, res) => {
@@ -146,4 +168,6 @@ app.get("/signers", (req, res) => {
     });
 });
 
-app.listen(8080, () => console.log("port 8080 listening ..."));
+app.listen(process.env.PORT || 8080, () =>
+    console.log("port 8080 listening ...")
+);
