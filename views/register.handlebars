@@ -1,3 +1,6 @@
+{{#if err}}
+<div class="error"> Oops, something went wrong.</div>
+{{/if}}
 
 <h1>Petition for an obligatory 30 minutes nap during work time!</h1>
     <h2>Wanna sign this petition? Register or login in first.</h2>
@@ -5,20 +8,21 @@
 
     <form method = "POST">
       <div id="boxAroundForm">
-      <label for="first">First name:
+      <label for="first">First name:</label>
     	<input name= "first" id="first">
 
-      <label for="last">Last name:
+      <label for="last">Last name:</label>
       <input name= "last" id="last">
 
-      <label for="mailAddress">Email Address:
-      <input name= "mailAddress" id="mailAddress">
+      <label for="mailAddress">Email Address:</label>
+      <input type="email" required name= "mailAddress" id="mailAddress">
 
-      <label for="password">Password:
+      <label for="password">Password:</label>
       <input name= "password" id="password">
       </div>
 
       <button name="button" id="submitButton">Sign up</button>
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
 
     <div>If you are already a member, please <a href="/login">log in</a><div>

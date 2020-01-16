@@ -1,0 +1,18 @@
+<h1>Tell us a little bit about yourself.</h1>
+
+<form method = "POST">
+  <label for="age">Age:</label>
+  <input name= "age" id="age">
+
+  <label for="city">City:</label>
+  <input name= "city" id="city">
+
+
+  <label for="homepage">Homepage - Enter an https:// URL: </label>
+  <input type="url" name="url" id="url"
+         placeholder="https://example.com"
+         pattern="https://.*" size="30"
+         required>
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+  <button name="button" id="submitButton">Continue</button>
+</form>
