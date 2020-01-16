@@ -1,0 +1,7 @@
+<h1>The citizens of {{this.city}} have signed this petition!</h1>
+
+<ul id="list_signers">
+  {{#listOfSigners}}
+  <li><a href="{{url}}">{{this.first}} {{this.last}}</a> {{this.age}}</li>
+{{/listOfSigners}}
+</ul>

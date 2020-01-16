@@ -179,30 +179,44 @@ app.post("/petition", (req, res) => {
 //THE SIGNATURE DATA IS TAKEN FROM DATABASE AND REBUILT INTO AN IMAGE
 app.get("/signed", (req, res) => {
     console.log("GET request to /signed happened!");
-    Promise.all([
-        db.getSignature(req.session.signatureId),
-        db.countRows()
-    ]).then(result => {
-        console.log("RESULT from getSignature and countRows: ", result);
-        res.render("thanks", {
-            layout: "main",
-            output: result[0].signature,
-            amountOfSubscribers: result[1].count
-        });
-    });
+    Promise.all([db.getSignature(req.session.signatureId), db.countRows()])
+        .then(result => {
+            console.log("RESULT from getSignature and countRows: ", result);
+            res.render("thanks", {
+                layout: "main",
+                output: result[0].signature,
+                amountOfSubscribers: result[1].count
+            });
+        })
+        .catch(err => console.log("error in signed", err));
 });
 
 //LAST PAGE _ USER SEES LISTS OF SUBSCRIBERS
 app.get("/signers", (req, res) => {
     console.log("GET request to /signers happened!");
-    db.dataFromThreeTables().then(result => {
-        res.render("finalPage", {
-            layout: "main",
-            listOfSigners: result,
-            url: result.url
-        });
-        console.log("result - for list of signers: ", result);
-    });
+    db.dataFromThreeTables()
+        .then(result => {
+            res.render("signers", {
+                layout: "main",
+                listOfSigners: result
+            });
+            console.log("result - for list of signers: ", result);
+        })
+        .catch(err => console.log("error in signers", err));
+});
+
+app.get("/signers/:city", (req, res) => {
+    console.log("GET request to /signers/:city happened");
+    db.getSignersByCity(req.params.city)
+        .then(result => {
+            console.log("result from signers/city: ", result);
+            res.render("signersByCity", {
+                layout: "main",
+                listOfSigners: result,
+                city: req.params.city
+            });
+        })
+        .catch(err => console.log("error in signers/:city", err));
 });
 
 app.listen(process.env.PORT || 8080, () =>

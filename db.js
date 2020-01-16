@@ -80,7 +80,18 @@ exports.countRows = function() {
 exports.dataFromThreeTables = function() {
     return db
         .query(
-            "SELECT first, last, age, city, url, signature FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id"
+            "SELECT users.id, first, last, age, city, url, signature FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id"
+        )
+        .then(({ rows }) => {
+            return rows;
+        });
+};
+
+exports.getSignersByCity = function(city) {
+    return db
+        .query(
+            "SELECT users.id, first, last, age FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id WHERE LOWER(city) = LOWER($1)",
+            [city]
         )
         .then(({ rows }) => {
             return rows;
