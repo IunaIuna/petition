@@ -3,8 +3,29 @@
 }
 
 body {
-    background-image: linear-gradient(#2980b9, #6dd5fa, #ffffff);
-    height: 100vh;
+    background-color: #6dd5fa;
+    color: black;
+    background-image: url(boy.jpg);
+    background-position: 50% 55%;
+    background-size: 100%;
+    font-size: 20px;
+}
+
+#centerBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+}
+
+#innerBody {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.flexContainer {
+    display: flex;
 }
 
 #canvas {
@@ -12,13 +33,52 @@ body {
     /* border: 5px solid dimgrey; */
 }
 
-#list_signers li {
-    list-style-type: none;
+#signatureAsImage {
+    margin: 10px;
 }
 
-#boxAroundInputInfo {
-    display: block;
+#list_signers li {
+    list-style-type: none;
+    margin-left: -38px;
 }
-#boxAroundForm {
-    display: inline-block;
+
+#footer {
+    position: fixed;
+    bottom: 5px;
+    left: 10px;
+}
+
+#logout {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+a:visited {
+    color: rgb(83, 51, 237);
+}
+
+#logout img {
+    height: 50px;
+    width: auto;
+}
+
+#deleteButton {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font: inherit;
+    color: rgb(0, 0, 238);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.error {
+    color: white;
+    background-color: darkred;
+}
+
+.update {
+    color: white;
+    background-color: gold;
 }

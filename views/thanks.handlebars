@@ -1,10 +1,24 @@
-<h1>Im the thank you PAGE</h1>
+{{#if err}}
+<div class="error"> Oops, something went wrong.</div>
+{{/if}}
+
+<a id="logout" href="/logout"><img src="icons8-export-80.png"></a>
+
+
+<h1>Thanks for signing up!</h1>
 
 <canvas id="signatureAsImage" width="600" height="100"></canvas>
 
+<center>
+<a href="/signers" id="linkToSubscriberList">See all {{amountOfSubscribers}} signers</a><br>
 
+<a href="/profile/edit" id="profilEdit">Edit your profile</a><br>
 
-<a href="/signers" id="linkToSubscriberList">See all {{amountOfSubscribers}} signers</a>
+<form method="POST" action="/signed/delete">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <button id="deleteButton">Delete your signature</button>
+</form><br>
+</center>
 
 <script type="text/javascript">
   let newCanvas = document.getElementById("signatureAsImage");

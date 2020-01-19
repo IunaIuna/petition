@@ -1,6 +1,19 @@
+{{#if err}}
+<div class="error"> Oops, something went wrong.</div>
+{{/if}}
 
+<a id="logout" href="/logout"><img src="/icons8-export-80.png"></a>
+
+<h1>All the signers of our petition:</h1>
 <ul id="list_signers">
   {{#listOfSigners}}
+
+
+  {{#if url}}
   <li><a href="{{url}}">{{this.first}} {{this.last}}</a> {{this.age}} <a href="/signers/{{city}}">{{this.city}}</a></li>
+  {{else}}
+  <li>{{this.first}} {{this.last}} {{this.age}} <a href="/signers/{{city}}">{{this.city}}</a></li>
+  {{/if}}
+
 {{/listOfSigners}}
 </ul>

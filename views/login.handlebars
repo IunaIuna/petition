@@ -1,19 +1,31 @@
 
+
 <h2>Please log in.</h2>
 
 
-    <form method = "POST">
-      <div id="boxAroundInputInfo">
-      <label for="mailAddress">Email Address:</label>
-      <input name= "mailAddress" id="mailAddress">
+<form method = "POST">
 
-      <label for="password">Password:</label>
-      <input name= "password" id="password">
+  <div class="flexContainer">
+    <div>
+      <label for="mailAddress">Email Address:</label><br>
+      <input name= "mailAddress" id="mailAddress"><br>
 
-      </div>
-      <button name="button" id="submitButton">LOG IN</button>
-      <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
+      <label for="password">Password:</label><br>
+      <input type= "password" name= "password" id="password"><br>
 
-    <script src="emptyInput.js" type="text/javascript">
-    </script>
+    </div>
+  </div><br>
+  <button name="button" id="submitButton">LOG IN</button>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+</form>
+
+<div>You have no account? <a href="/register">Sign up now</a><div>
+
+  {{#if err}}
+  <div class="error"> Oops, something went wrong. Mail address or password do not exist.</div>
+  {{/if}}
+
+
+  <script src="emptyInput.js" type="text/javascript">
+  </script>

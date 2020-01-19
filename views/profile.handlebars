@@ -1,18 +1,28 @@
+{{#if err}}
+<div class="error"> Oops, something went wrong.</div>
+{{/if}}
+
+<a id="logout" href="/logout"><img src="icons8-export-80.png"></a>
+
 <h1>Tell us a little bit about yourself.</h1>
 
+<div class="flexContainer">
+  <div>
 <form method = "POST">
-  <label for="age">Age:</label>
-  <input name= "age" id="age">
+  <label for="age">Age:</label><br>
+  <input name= "age" id="age"><br>
 
-  <label for="city">City:</label>
-  <input name= "city" id="city">
+  <label for="city">City:</label><br>
+  <input name= "city" id="city"><br>
+</div>
+</div>
 
-
-  <label for="homepage">Homepage - Enter an https:// URL: </label>
+  <label for="homepage">Homepage</label><br>
   <input type="url" name="url" id="url"
          placeholder="https://example.com"
          pattern="https://.*" size="30"
-         required>
-<input type="hidden" name="_csrf" value="{{csrfToken}}">
+         require>
+         <!-- required> -->
+<input type="hidden" name="_csrf" value="{{csrfToken}}"><br><br>
   <button name="button" id="submitButton">Continue</button>
 </form>

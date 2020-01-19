@@ -1,0 +1,42 @@
+{{#if err}}
+<div class="error"> Oops, something went wrong.</div>
+{{/if}}
+
+<link rel="stylesheet" href="../../styles.css">
+
+<a id="logout" href="/logout"><img src="../../icons8-export-80.png"></a>
+
+<h1>Edit your profile</h1>
+
+<form method = "POST">
+  {{#rows}}
+  <label for="first">First name:</label><br>
+  <input name= "first" id="first" value="{{first}}"><br>
+
+  <label for="last">Last name:</label><br>
+  <input name= "last" id="last" value="{{last}}"><br>
+
+  <label for="mailAddress">Email Address:</label><br>
+  <input type="email" name= "email" id="email" value="{{email}}"><br>
+
+  <label for="password">Password:</label><br>
+  <input name= "password" id="password"><br>
+
+  <label for="">Age:</label><br>
+  <input name= "age" id="age" value="{{age}}"><br>
+
+  <label for="">City:</label><br>
+  <input name= "city" id="city" value="{{city}}"><br>
+
+  <label for="">Homepage:</label><br>
+  <input name= "url" id="url" value="{{url}}"><br>
+  {{/rows}}
+  <br>
+  <button name="button" id="submitButton">Update</button>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}">
+</form>
+
+<a href="/petition">Back to the petition</a>
+
+<script src="emptyInput.js" type="text/javascript">
+</script>
